@@ -1,61 +1,52 @@
 # Rollback Plan
 
-This service is independent from LoyaltyPilot.
-
-Rollback does not affect:
+This service is isolated. Rollback does not affect:
 
 - LoyaltyPilot GitHub repository.
 - LoyaltyPilot Render backend.
 - LoyaltyPilot Vercel frontend.
 - LoyaltyPilot Supabase project.
 
-## If First Deployment Fails
+## Roll Back A Failed Deploy
 
-1. Open the new Render service:
+1. Open Render.
+2. Open `loyaltypilot-evolution`.
+3. Open Events or Deploys.
+4. Select the last successful deploy.
+5. Click Rollback or Manual Deploy for that version.
 
-   ```text
-   evolution-api-host
-   ```
+## Suspend The Service
 
-2. Click Manual Deploy.
-3. Choose a previous successful deploy if one exists.
-4. If no successful deploy exists, suspend or delete only this new service.
+If there is no successful deploy:
 
-## If The Docker Image Fails
+1. Open `loyaltypilot-evolution`.
+2. Click Suspend Service.
+3. Leave LoyaltyPilot untouched.
 
-1. Edit the Docker build argument in Render or Dockerfile:
+## Delete And Recreate Only Evolution
 
-   ```text
-   EVOLUTION_API_IMAGE=evoapicloud/evolution-api:v2.3.6
-   ```
+For a broken first-time deployment:
 
-2. Pin the last known working image tag.
-3. Redeploy only `evolution-api-host`.
+1. Delete `loyaltypilot-evolution`.
+2. Delete `loyaltypilot-evolution-postgres`.
+3. Recreate the Blueprint from this repository.
 
-## If Database Migration Or Startup Fails
+No LoyaltyPilot data is stored in this Evolution Postgres database until a future integration phase.
 
-1. Do not touch LoyaltyPilot Supabase.
-2. Open the Render database created for this service:
+## Rotate A Leaked API Key
 
-   ```text
-   evolution-api-postgres
-   ```
+1. Generate a new long random `AUTHENTICATION_API_KEY`.
+2. Update Render environment variables.
+3. Redeploy `loyaltypilot-evolution`.
+4. Delete unknown instances.
 
-3. Restore from Render backup if available.
-4. If this is a new test deployment, delete and recreate only the Evolution database.
+## Roll Back Docker Image Version
 
-## If API Key Is Exposed
+The default image follows:
 
-1. Generate a new `AUTHENTICATION_API_KEY`.
-2. Update the Render environment variable.
-3. Redeploy the Evolution API service.
-4. Delete any unknown Evolution instances.
+```text
+evoapicloud/evolution-api:latest
+```
 
-## Emergency Isolation
-
-To fully isolate the service:
-
-1. Suspend `evolution-api-host` in Render.
-2. Rotate `AUTHENTICATION_API_KEY`.
-3. Keep LoyaltyPilot unchanged.
+If a future `latest` image breaks production, pin the Docker build argument to the last known working version in Render or in `Dockerfile`, then redeploy only this repository.
 

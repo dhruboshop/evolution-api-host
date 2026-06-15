@@ -1,13 +1,17 @@
 services:
   - type: web
-    name: evolution-api-host
+    name: loyaltypilot-evolution
     runtime: docker
     plan: starter
     autoDeploy: true
     healthCheckPath: /
+    disk:
+      name: evolution-instances
+      mountPath: /evolution/instances
+      sizeGB: 1
     envVars:
       - key: SERVER_NAME
-        value: evolution-api-host
+        value: loyaltypilot-evolution
       - key: SERVER_TYPE
         value: http
       - key: SERVER_PORT
@@ -22,7 +26,7 @@ services:
         value: postgresql
       - key: DATABASE_CONNECTION_URI
         fromDatabase:
-          name: evolution-api-postgres
+          name: loyaltypilot-evolution-postgres
           property: connectionString
       - key: DATABASE_CONNECTION_CLIENT_NAME
         value: evolution_api_host
@@ -42,7 +46,11 @@ services:
         value: "false"
       - key: DATABASE_SAVE_IS_ON_WHATSAPP
         value: "true"
+      - key: DATABASE_SAVE_IS_ON_WHATSAPP_DAYS
+        value: "7"
       - key: DATABASE_DELETE_MESSAGE
+        value: "false"
+      - key: DEL_INSTANCE
         value: "false"
       - key: CACHE_REDIS_ENABLED
         value: "false"
@@ -82,10 +90,17 @@ services:
         value: "false"
       - key: LANGUAGE
         value: en
+      - key: CONFIG_SESSION_PHONE_CLIENT
+        value: LoyaltyPilot
+      - key: CONFIG_SESSION_PHONE_NAME
+        value: Chrome
+      - key: QRCODE_LIMIT
+        value: "30"
+      - key: QRCODE_COLOR
+        value: "#146c5f"
 
 databases:
-  - name: evolution-api-postgres
+  - name: loyaltypilot-evolution-postgres
     plan: starter
     databaseName: evolution
     user: evolution
-

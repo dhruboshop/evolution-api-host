@@ -29,4 +29,3 @@ echo "5. Delete instance"
 echo "OK"
 
 echo "Verification complete for $EVOLUTION_API_URL"
-

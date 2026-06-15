@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        EVOLUTION_API_IMAGE: ${EVOLUTION_API_IMAGE:-evoapicloud/evolution-api:v2.3.6}
+        EVOLUTION_API_IMAGE: ${EVOLUTION_API_IMAGE:-evoapicloud/evolution-api:latest}
     restart: unless-stopped
     env_file:
       - .env
@@ -12,6 +12,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - evolution-instances:/evolution/instances
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/ >/dev/null 2>&1 || exit 1"]
       interval: 30s
@@ -25,7 +27,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-evolution}
       POSTGRES_USER: ${POSTGRES_USER:-evolution}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env before running docker compose}
     volumes:
       - evolution-postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -36,4 +38,4 @@ services:
 
 volumes:
   evolution-postgres-data:
-
+  evolution-instances:

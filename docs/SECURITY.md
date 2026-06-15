@@ -1,38 +1,48 @@
 # Security Review
 
+## Isolation
+
+This repository is separate from LoyaltyPilot.
+
+Do not share:
+
+- Render service.
+- Render database.
+- Supabase keys.
+- Vercel variables.
+- LoyaltyPilot backend variables.
+
 ## Secrets
 
-No secrets are committed.
+No secrets belong in git.
 
-Required secrets:
+Required production secrets:
 
 ```text
 AUTHENTICATION_API_KEY
 DATABASE_CONNECTION_URI
 SERVER_URL
+CORS_ORIGIN
 ```
 
-Optional secrets:
+`DATABASE_CONNECTION_URI` is provided by Render from the dedicated Evolution database.
 
-```text
-WEBHOOK_GLOBAL_URL
-PROXY_USERNAME
-PROXY_PASSWORD
-S3_ACCESS_KEY
-S3_SECRET_KEY
-```
+## API Key Protection
 
-## API Authentication
-
-Evolution API requires:
+All protected Evolution API calls must send:
 
 ```text
 apikey: <AUTHENTICATION_API_KEY>
 ```
 
-The verification scripts send the API key only through headers.
+Rules:
 
-## Public Instance Listing
+- Minimum 32 characters.
+- Randomly generated.
+- Stored only in Render or local shell during verification.
+- Rotated if exposed.
+
+## Instance Inventory
 
 Production default:
 
@@ -40,21 +50,35 @@ Production default:
 AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=false
 ```
 
-This avoids exposing instance inventory through fetch endpoints.
+This reduces public visibility of instance inventory.
 
 ## CORS
 
 Production default:
 
 ```text
-CORS_ORIGIN=https://your-loyaltypilot-web-domain.vercel.app
+CORS_ORIGIN=<your LoyaltyPilot web origin>
 ```
 
-Do not use `*` in production.
+Do not use:
 
-## Disabled Integrations
+```text
+CORS_ORIGIN=*
+```
 
-The following are disabled by default:
+## Persistent Storage
+
+Render disk is mounted at:
+
+```text
+/evolution/instances
+```
+
+This keeps WhatsApp instance data separate from the application image.
+
+## Disabled Optional Services
+
+Disabled by default:
 
 - Redis
 - RabbitMQ
@@ -70,25 +94,15 @@ The following are disabled by default:
 - EvoAI
 - S3
 
-Enable only the integrations that are actually required.
-
-## Render Isolation
-
-Use a separate Render service and separate Render Postgres database.
-
-Do not reuse:
-
-- LoyaltyPilot backend service.
-- LoyaltyPilot backend environment variables.
-- LoyaltyPilot Supabase database.
-- LoyaltyPilot Docker configuration.
+Enable only after a separate review.
 
 ## Pre-launch Security Checklist
 
-- `AUTHENTICATION_API_KEY` is long and random.
 - `.env` is not committed.
+- `AUTHENTICATION_API_KEY` is random and at least 32 characters.
 - `AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=false`.
 - `CORS_ORIGIN` is restricted.
-- Render service logs contain no secrets.
+- Render database is dedicated to Evolution API.
+- Render disk is dedicated to Evolution API.
 - Test instances are deleted after verification.
 

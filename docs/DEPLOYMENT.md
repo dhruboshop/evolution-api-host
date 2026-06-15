@@ -1,94 +1,99 @@
 # Deployment Guide
 
-This deployment is independent from LoyaltyPilot.
-
-Do not connect this service to the existing LoyaltyPilot Render backend during this phase.
-
-## 1. Create GitHub Repository
-
-Create a new GitHub repository:
+This guide deploys Evolution API as a new, independent Render service named:
 
 ```text
-evolution-api-host
+loyaltypilot-evolution
 ```
 
-From this directory:
+It does not change LoyaltyPilot, Vercel, Supabase, or the existing Render backend.
 
-```bash
-git init
-git add .
-git commit -m "Initial Evolution API host deployment"
-git branch -M main
-git remote add origin https://github.com/YOUR_ORG/evolution-api-host.git
-git push -u origin main
+## 1. Create Or Use The GitHub Repository
+
+Repository:
+
+```text
+https://github.com/dhruboshop/evolution-api-host.git
 ```
 
-## 2. Connect Render
+Push this repository to `main`.
+
+## 2. Create A Render Blueprint
 
 In Render:
 
-1. Open Dashboard.
+1. Open the Render dashboard.
 2. Click New.
 3. Choose Blueprint.
-4. Select the `evolution-api-host` repository.
-5. Confirm the `render.yaml` plan.
+4. Select `dhruboshop/evolution-api-host`.
+5. Confirm the services in `render.yaml`.
 
-Render will create:
-
-- One Docker web service.
-- One independent Postgres database.
-
-## 3. Configure Required Environment Variables
-
-Set these in the new Render Evolution service only.
-
-Required:
+Render should create:
 
 ```text
-SERVER_URL=https://your-evolution-api-host.onrender.com
-AUTHENTICATION_API_KEY=generate-a-long-random-secret
+loyaltypilot-evolution
+loyaltypilot-evolution-postgres
+```
+
+## 3. Set Required Render Variables
+
+Open the `loyaltypilot-evolution` web service and set:
+
+```text
+SERVER_URL=https://loyaltypilot-evolution.onrender.com
+AUTHENTICATION_API_KEY=<generate-a-long-random-secret>
 CORS_ORIGIN=https://your-loyaltypilot-web-domain.vercel.app
 ```
 
-The `DATABASE_CONNECTION_URI` value is supplied by `render.yaml` from the new Render database.
+Do not use quotes around values in Render.
 
-Do not reuse LoyaltyPilot backend secrets.
+Do not reuse the LoyaltyPilot backend API key or any Supabase key.
 
-## 4. Deploy
+## 4. Confirm Database Variable
 
-Before deploying from a local shell, validate required environment variables if you have exported them:
+`render.yaml` wires:
 
-```bash
-./scripts/validate-env.sh
+```text
+DATABASE_CONNECTION_URI
 ```
 
-Trigger the first deploy from Render.
+from:
 
-Expected behavior:
+```text
+loyaltypilot-evolution-postgres
+```
 
-- Render builds the Dockerfile.
-- Docker pulls the official Evolution API image.
-- Render starts the service on port `8080`.
-- Health check path `/` becomes healthy.
+If Render asks you to enter it manually, copy the internal database connection string from the new Evolution Postgres database only.
 
-## 5. Verify Health Endpoint
+## 5. Deploy
+
+Trigger a manual deploy after environment variables are set.
+
+Expected startup:
+
+1. Docker pulls `evoapicloud/evolution-api:latest`.
+2. Evolution API starts on port `8080`.
+3. Render health check calls `/`.
+4. Service becomes healthy.
+
+## 6. Verify Health
+
+From your laptop:
 
 ```bash
-export EVOLUTION_API_URL=https://your-evolution-api-host.onrender.com
+export EVOLUTION_API_URL=https://loyaltypilot-evolution.onrender.com
 ./scripts/verify-health.sh
 ```
 
-Expected result:
+Pass result:
 
 ```text
-HTTP response body from Evolution API
+HTTP 2xx response
 ```
 
-No `401` is expected for the root health endpoint.
+## 7. Verify API Authentication
 
-## 6. Verify API Authentication
-
-Without API key:
+Without the API key:
 
 ```bash
 curl -i "$EVOLUTION_API_URL/instance/fetchInstances"
@@ -97,12 +102,13 @@ curl -i "$EVOLUTION_API_URL/instance/fetchInstances"
 Expected:
 
 ```text
-401 or forbidden response
+Unauthorized or forbidden response
 ```
 
-With API key:
+With the API key:
 
 ```bash
+export EVOLUTION_API_KEY=<same value as AUTHENTICATION_API_KEY>
 curl -i "$EVOLUTION_API_URL/instance/fetchInstances" \
   -H "apikey: $EVOLUTION_API_KEY"
 ```
@@ -110,32 +116,29 @@ curl -i "$EVOLUTION_API_URL/instance/fetchInstances" \
 Expected:
 
 ```text
-Authenticated response
+Authenticated JSON response
 ```
 
-## 7. Verify Instance Creation
+## 8. Verify Instance Creation
 
 ```bash
-export EVOLUTION_API_KEY=your-api-key
-export INSTANCE_NAME=loyaltypilot_test_001
+export INSTANCE_NAME=loyaltypilot_verify
 ./scripts/create-instance.sh
 ```
 
 Expected:
 
 ```text
-JSON response containing the created instance and QR/pairing payload fields
+JSON response from /instance/create
 ```
 
-## 8. Verify Pairing Code Generation
-
-Pairing code or QR payload:
+## 9. Verify Pairing Code Or QR Payload
 
 ```bash
 ./scripts/get-pairing-code.sh
 ```
 
-If your Evolution API version requires a phone number for pairing code:
+If your Evolution API deployment requires a phone number for pairing code:
 
 ```bash
 export PHONE_NUMBER=919999999999
@@ -148,24 +151,22 @@ Expected:
 JSON response from /instance/connect/:instance
 ```
 
-## 9. Verify Connection Status
+## 10. Verify Connection Status
 
 ```bash
 ./scripts/connection-status.sh
 ```
 
-Expected statuses may include:
+Expected:
 
 ```text
-connecting
-open
-close
+JSON response from /instance/connectionState/:instance
 ```
 
-## 10. Delete Test Instance
+## 11. Delete Test Instance
 
 ```bash
 ./scripts/delete-instance.sh
 ```
 
-This prevents test instances from staying in the database.
+This keeps the new Evolution database clean.
