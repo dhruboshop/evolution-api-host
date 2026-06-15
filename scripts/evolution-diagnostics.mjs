@@ -41,5 +41,4 @@ process.on("uncaughtException", (error) => {
 
 process.on("unhandledRejection", (reason) => {
   log("unhandledRejection", { error: safeError(reason) });
-  setTimeout(() => process.exit(1), 500).unref();
 });

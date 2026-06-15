@@ -33,19 +33,19 @@ services:
       - key: DATABASE_SAVE_DATA_INSTANCE
         value: "true"
       - key: DATABASE_SAVE_DATA_NEW_MESSAGE
-        value: "true"
+        value: "false"
       - key: DATABASE_SAVE_MESSAGE_UPDATE
-        value: "true"
+        value: "false"
       - key: DATABASE_SAVE_DATA_CONTACTS
-        value: "true"
+        value: "false"
       - key: DATABASE_SAVE_DATA_CHATS
-        value: "true"
+        value: "false"
       - key: DATABASE_SAVE_DATA_LABELS
         value: "false"
       - key: DATABASE_SAVE_DATA_HISTORIC
         value: "false"
       - key: DATABASE_SAVE_IS_ON_WHATSAPP
-        value: "true"
+        value: "false"
       - key: DATABASE_SAVE_IS_ON_WHATSAPP_DAYS
         value: "7"
       - key: DATABASE_DELETE_MESSAGE
