@@ -1,0 +1,91 @@
+services:
+  - type: web
+    name: evolution-api-host
+    runtime: docker
+    plan: starter
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: SERVER_NAME
+        value: evolution-api-host
+      - key: SERVER_TYPE
+        value: http
+      - key: SERVER_PORT
+        value: "8080"
+      - key: SERVER_URL
+        sync: false
+      - key: AUTHENTICATION_API_KEY
+        sync: false
+      - key: AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES
+        value: "false"
+      - key: DATABASE_PROVIDER
+        value: postgresql
+      - key: DATABASE_CONNECTION_URI
+        fromDatabase:
+          name: evolution-api-postgres
+          property: connectionString
+      - key: DATABASE_CONNECTION_CLIENT_NAME
+        value: evolution_api_host
+      - key: DATABASE_SAVE_DATA_INSTANCE
+        value: "true"
+      - key: DATABASE_SAVE_DATA_NEW_MESSAGE
+        value: "true"
+      - key: DATABASE_SAVE_MESSAGE_UPDATE
+        value: "true"
+      - key: DATABASE_SAVE_DATA_CONTACTS
+        value: "true"
+      - key: DATABASE_SAVE_DATA_CHATS
+        value: "true"
+      - key: DATABASE_SAVE_DATA_LABELS
+        value: "false"
+      - key: DATABASE_SAVE_DATA_HISTORIC
+        value: "false"
+      - key: DATABASE_SAVE_IS_ON_WHATSAPP
+        value: "true"
+      - key: DATABASE_DELETE_MESSAGE
+        value: "false"
+      - key: CACHE_REDIS_ENABLED
+        value: "false"
+      - key: CACHE_LOCAL_ENABLED
+        value: "true"
+      - key: CORS_ORIGIN
+        sync: false
+      - key: CORS_METHODS
+        value: GET,POST,PUT,DELETE
+      - key: CORS_CREDENTIALS
+        value: "true"
+      - key: LOG_LEVEL
+        value: ERROR,WARN,INFO,LOG
+      - key: LOG_COLOR
+        value: "false"
+      - key: LOG_BAILEYS
+        value: error
+      - key: TELEMETRY_ENABLED
+        value: "false"
+      - key: WEBSOCKET_ENABLED
+        value: "false"
+      - key: WEBHOOK_GLOBAL_ENABLED
+        value: "false"
+      - key: RABBITMQ_ENABLED
+        value: "false"
+      - key: SQS_ENABLED
+        value: "false"
+      - key: TYPEBOT_ENABLED
+        value: "false"
+      - key: CHATWOOT_ENABLED
+        value: "false"
+      - key: OPENAI_ENABLED
+        value: "false"
+      - key: DIFY_ENABLED
+        value: "false"
+      - key: EVOAI_ENABLED
+        value: "false"
+      - key: LANGUAGE
+        value: en
+
+databases:
+  - name: evolution-api-postgres
+    plan: starter
+    databaseName: evolution
+    user: evolution
+
