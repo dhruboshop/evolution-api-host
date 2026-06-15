@@ -3,6 +3,6 @@ ARG EVOLUTION_API_IMAGE=evoapicloud/evolution-api:latest
 FROM ${EVOLUTION_API_IMAGE}
 
 LABEL org.opencontainers.image.title="LoyaltyPilot Evolution API Host"
-LABEL org.opencontainers.image.description="Independent Evolution API deployment wrapper for Render"
+LABEL org.opencontainers.image.description="Independent Evolution API deployment wrapper for Zeabur and Render"
 
 EXPOSE 8080

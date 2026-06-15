@@ -6,8 +6,8 @@ This repository deploys a separate WhatsApp Evolution API service. It must stay 
 
 ## What This Repository Deploys
 
-- Render Docker web service: `loyaltypilot-evolution`
-- Render Postgres database: `loyaltypilot-evolution-postgres`
+- Zeabur Docker service: `loyaltypilot-evolution`
+- Optional Render Docker web service: `loyaltypilot-evolution`
 - Official Evolution API image: `evoapicloud/evolution-api:latest`
 - Health check endpoint: `/`
 - API authentication: `apikey` header using `AUTHENTICATION_API_KEY`
@@ -22,6 +22,7 @@ evolution-api-host/
   render.yaml
   .env.example
   README.md
+  ZEABUR_DEPLOYMENT.md
   docs/
     DEPLOYMENT.md
     VERIFICATION.md
@@ -36,6 +37,25 @@ evolution-api-host/
     connection-status.sh
     delete-instance.sh
     verify-all.sh
+```
+
+## Required Zeabur Environment Variables
+
+Set these in the new Zeabur service only:
+
+```text
+SERVER_URL
+AUTHENTICATION_API_KEY
+DATABASE_PROVIDER
+DATABASE_CONNECTION_URI
+DATABASE_CONNECTION_CLIENT_NAME
+CORS_ORIGIN
+```
+
+For Zeabur, expose HTTP port `8080` and mount a volume at:
+
+```text
+/evolution/instances
 ```
 
 ## Required Render Environment Variables
@@ -88,6 +108,7 @@ EVOLUTION_API_URL=http://localhost:8080 ./scripts/verify-health.sh
 
 ## Documentation
 
+- [Zeabur Deployment Guide](ZEABUR_DEPLOYMENT.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)
 - [Verification Checklist](docs/VERIFICATION.md)
 - [Rollback Plan](docs/ROLLBACK.md)
