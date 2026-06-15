@@ -73,6 +73,14 @@ services:
       - key: WEBSOCKET_ENABLED
         value: "false"
       - key: WEBHOOK_GLOBAL_ENABLED
+        value: "true"
+      - key: WEBHOOK_GLOBAL_URL
+        value: https://name-loyaltypilot-backend.onrender.com/api/whatsapp/webhook
+      - key: WEBHOOK_EVENTS_CONNECTION_UPDATE
+        value: "true"
+      - key: WEBHOOK_EVENTS_QRCODE_UPDATED
+        value: "true"
+      - key: WEBHOOK_EVENTS_MESSAGES_UPSERT
         value: "false"
       - key: RABBITMQ_ENABLED
         value: "false"
