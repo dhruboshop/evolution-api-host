@@ -3,7 +3,7 @@ set -eu
 
 : "${EVOLUTION_API_URL:?Set EVOLUTION_API_URL}"
 : "${EVOLUTION_API_KEY:?Set EVOLUTION_API_KEY}"
-: "${INSTANCE_NAME:=loyaltypilot_verify_$(date +%s)}"
+: "${INSTANCE_NAME:=zappy_verify_$(date +%s)}"
 export INSTANCE_NAME
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"

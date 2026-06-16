@@ -14,7 +14,7 @@ function safeError(error) {
 function log(event, extra = {}) {
   console.error(JSON.stringify({
     level: event.includes("Exception") || event.includes("Rejection") ? "error" : "warn",
-    source: "loyaltypilot-evolution-diagnostics",
+    source: "zappy-evolution-diagnostics",
     event,
     pid: process.pid,
     uptimeSeconds: Math.round(process.uptime()),

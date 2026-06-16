@@ -5,9 +5,9 @@ Run this after every deployment.
 ## Setup
 
 ```bash
-export EVOLUTION_API_URL=https://loyaltypilot-evolution.onrender.com
+export EVOLUTION_API_URL=https://wa.zappy.rest
 export EVOLUTION_API_KEY=<AUTHENTICATION_API_KEY from Render>
-export INSTANCE_NAME=loyaltypilot_verify
+export INSTANCE_NAME=zappy_verify
 ```
 
 Optional:

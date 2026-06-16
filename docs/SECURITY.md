@@ -2,7 +2,7 @@
 
 ## Isolation
 
-This repository is separate from LoyaltyPilot.
+This repository is separate from Zappy.
 
 Do not share:
 
@@ -10,7 +10,7 @@ Do not share:
 - Render database.
 - Supabase keys.
 - Vercel variables.
-- LoyaltyPilot backend variables.
+- Zappy backend variables.
 
 ## Secrets
 
@@ -57,7 +57,7 @@ This reduces public visibility of instance inventory.
 Production default:
 
 ```text
-CORS_ORIGIN=<your LoyaltyPilot web origin>
+CORS_ORIGIN=<your Zappy web origin>
 ```
 
 Do not use:

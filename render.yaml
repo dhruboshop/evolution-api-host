@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: loyaltypilot-evolution
+    name: zappy-evolution
     runtime: docker
     plan: starter
     autoDeploy: true
@@ -11,7 +11,7 @@ services:
       sizeGB: 1
     envVars:
       - key: SERVER_NAME
-        value: loyaltypilot-evolution
+        value: zappy-evolution
       - key: SERVER_TYPE
         value: http
       - key: SERVER_PORT
@@ -26,7 +26,7 @@ services:
         value: postgresql
       - key: DATABASE_CONNECTION_URI
         fromDatabase:
-          name: loyaltypilot-evolution-postgres
+          name: zappy-evolution-postgres
           property: connectionString
       - key: DATABASE_CONNECTION_CLIENT_NAME
         value: evolution_api_host
@@ -75,7 +75,7 @@ services:
       - key: WEBHOOK_GLOBAL_ENABLED
         value: "true"
       - key: WEBHOOK_GLOBAL_URL
-        value: https://name-loyaltypilot-backend.onrender.com/api/whatsapp/webhook
+        value: https://api.zappy.rest/api/whatsapp/webhook
       - key: WEBHOOK_EVENTS_CONNECTION_UPDATE
         value: "true"
       - key: WEBHOOK_EVENTS_QRCODE_UPDATED
@@ -99,7 +99,7 @@ services:
       - key: LANGUAGE
         value: en
       - key: CONFIG_SESSION_PHONE_CLIENT
-        value: LoyaltyPilot
+        value: Zappy
       - key: CONFIG_SESSION_PHONE_NAME
         value: Chrome
       - key: QRCODE_LIMIT
@@ -108,7 +108,7 @@ services:
         value: "#146c5f"
 
 databases:
-  - name: loyaltypilot-evolution-postgres
+  - name: zappy-evolution-postgres
     plan: starter
     databaseName: evolution
     user: evolution

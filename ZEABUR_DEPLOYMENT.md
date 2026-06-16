@@ -3,10 +3,10 @@
 This guide deploys Evolution API as a standalone Zeabur service named:
 
 ```text
-loyaltypilot-evolution
+zappy-evolution
 ```
 
-It does not change LoyaltyPilot, Vercel, Supabase, or any existing Render service.
+It does not change Zappy, Vercel, Supabase, or any existing Render service.
 
 ## Compatibility Audit
 
@@ -38,14 +38,14 @@ GitHub repository
       -> Postgres connection through DATABASE_CONNECTION_URI
 ```
 
-For first MVP validation, use Zeabur Postgres if available in your Zeabur project. If you must use the existing Supabase Postgres project, use a separate schema and do not use LoyaltyPilot application tables.
+For first MVP validation, use Zeabur Postgres if available in your Zeabur project. If you must use the existing Supabase Postgres project, use a separate schema and do not use Zappy application tables.
 
 ## Required Environment Variables
 
 Set these in Zeabur service variables.
 
 ```text
-SERVER_NAME=loyaltypilot-evolution
+SERVER_NAME=zappy-evolution
 SERVER_TYPE=http
 SERVER_PORT=8080
 SERVER_URL=${ZEABUR_WEB_URL}
@@ -55,7 +55,7 @@ AUTHENTICATION_EXPOSE_IN_FETCH_INSTANCES=false
 
 DATABASE_PROVIDER=postgresql
 DATABASE_CONNECTION_URI=<postgres-connection-string>
-DATABASE_CONNECTION_CLIENT_NAME=loyaltypilot_evolution
+DATABASE_CONNECTION_CLIENT_NAME=zappy_evolution
 
 DATABASE_SAVE_DATA_INSTANCE=true
 DATABASE_SAVE_DATA_NEW_MESSAGE=true
@@ -81,7 +81,7 @@ LOG_COLOR=false
 LOG_BAILEYS=error
 LANGUAGE=en
 
-CONFIG_SESSION_PHONE_CLIENT=LoyaltyPilot
+CONFIG_SESSION_PHONE_CLIENT=Zappy
 CONFIG_SESSION_PHONE_NAME=Chrome
 QRCODE_LIMIT=30
 QRCODE_COLOR=#146c5f
@@ -113,8 +113,8 @@ S3_ENABLED=false
 | `AUTHENTICATION_API_KEY` | Yes | Long random secret. Never commit it. |
 | `DATABASE_PROVIDER` | Yes | Use `postgresql` for MVP. |
 | `DATABASE_CONNECTION_URI` | Yes | Zeabur Postgres or Supabase Session Pooler URI. |
-| `DATABASE_CONNECTION_CLIENT_NAME` | Yes | Use `loyaltypilot_evolution`. |
-| `CORS_ORIGIN` | Yes | Use the future LoyaltyPilot web origin or a temporary admin origin for validation. Do not use `*` in production. |
+| `DATABASE_CONNECTION_CLIENT_NAME` | Yes | Use `zappy_evolution`. |
+| `CORS_ORIGIN` | Yes | Use the future Zappy web origin or a temporary admin origin for validation. Do not use `*` in production. |
 
 ### Optional Variables
 
@@ -157,7 +157,7 @@ If a volume cannot be configured on your current Zeabur plan, sessions may be lo
 
 Evolution metadata can use Supabase Postgres, but use it only if you accept that Evolution will create and migrate its own tables.
 
-Do not put Evolution tables in the same schema as LoyaltyPilot application tables.
+Do not put Evolution tables in the same schema as Zappy application tables.
 
 Preferred Supabase format:
 
@@ -192,7 +192,7 @@ This is the only manual SQL required for the shared Supabase option. For a fully
 8. Set the service name:
 
    ```text
-   loyaltypilot-evolution
+   zappy-evolution
    ```
 
 9. Configure public networking:
@@ -223,7 +223,7 @@ From your laptop:
 ```bash
 export EVOLUTION_API_URL=https://<your-zeabur-domain>
 export EVOLUTION_API_KEY=<AUTHENTICATION_API_KEY>
-export INSTANCE_NAME=loyaltypilot_verify
+export INSTANCE_NAME=zappy_verify
 ```
 
 ### Test 1: Health Endpoint
@@ -349,7 +349,7 @@ If the service restarts:
 - Without volume: session persistence is not reliable.
 - With local cache only: live connection state may need to rebuild after startup.
 
-Impact on LoyaltyPilot later:
+Impact on Zappy later:
 
 - Merchant onboarding must handle "reconnect required".
 - Pairing codes expire and must be regenerated.
@@ -360,8 +360,8 @@ Impact on LoyaltyPilot later:
 - Redis is disabled for this standalone validation to reduce moving parts.
 - Free or low-resource Zeabur plans are not proven for 50 active merchant sessions.
 - A volume is mandatory for any meaningful WhatsApp session persistence test.
-- A separate Postgres database is safer than sharing the production LoyaltyPilot Supabase project.
-- Do not connect this service to LoyaltyPilot until health, auth, instance creation, pairing, connection, and restart persistence are verified.
+- A separate Postgres database is safer than sharing the production Zappy Supabase project.
+- Do not connect this service to Zappy until health, auth, instance creation, pairing, connection, and restart persistence are verified.
 
 ## References
 

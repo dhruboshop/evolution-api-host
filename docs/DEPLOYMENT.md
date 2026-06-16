@@ -3,10 +3,10 @@
 This guide deploys Evolution API as a new, independent Render service named:
 
 ```text
-loyaltypilot-evolution
+zappy-evolution
 ```
 
-It does not change LoyaltyPilot, Vercel, Supabase, or the existing Render backend.
+It does not change Zappy, Vercel, Supabase, or the existing Render backend.
 
 ## 1. Create Or Use The GitHub Repository
 
@@ -31,23 +31,23 @@ In Render:
 Render should create:
 
 ```text
-loyaltypilot-evolution
-loyaltypilot-evolution-postgres
+zappy-evolution
+zappy-evolution-postgres
 ```
 
 ## 3. Set Required Render Variables
 
-Open the `loyaltypilot-evolution` web service and set:
+Open the `zappy-evolution` web service and set:
 
 ```text
-SERVER_URL=https://loyaltypilot-evolution.onrender.com
+SERVER_URL=https://wa.zappy.rest
 AUTHENTICATION_API_KEY=<generate-a-long-random-secret>
-CORS_ORIGIN=https://your-loyaltypilot-web-domain.vercel.app
+CORS_ORIGIN=https://zappy.rest
 ```
 
 Do not use quotes around values in Render.
 
-Do not reuse the LoyaltyPilot backend API key or any Supabase key.
+Do not reuse the Zappy backend API key or any Supabase key.
 
 ## 4. Confirm Database Variable
 
@@ -60,7 +60,7 @@ DATABASE_CONNECTION_URI
 from:
 
 ```text
-loyaltypilot-evolution-postgres
+zappy-evolution-postgres
 ```
 
 If Render asks you to enter it manually, copy the internal database connection string from the new Evolution Postgres database only.
@@ -81,7 +81,7 @@ Expected startup:
 From your laptop:
 
 ```bash
-export EVOLUTION_API_URL=https://loyaltypilot-evolution.onrender.com
+export EVOLUTION_API_URL=https://wa.zappy.rest
 ./scripts/verify-health.sh
 ```
 
@@ -122,7 +122,7 @@ Authenticated JSON response
 ## 8. Verify Instance Creation
 
 ```bash
-export INSTANCE_NAME=loyaltypilot_verify
+export INSTANCE_NAME=zappy_verify
 ./scripts/create-instance.sh
 ```
 

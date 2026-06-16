@@ -1,13 +1,13 @@
 # evolution-api-host
 
-Independent Evolution API deployment repository for LoyaltyPilot.
+Independent Evolution API deployment repository for Zappy.
 
-This repository deploys a separate WhatsApp Evolution API service. It must stay separate from the LoyaltyPilot application repository and from the existing LoyaltyPilot Render backend.
+This repository deploys a separate WhatsApp Evolution API service. It must stay separate from the Zappy application repository and from the existing Zappy Render backend.
 
 ## What This Repository Deploys
 
-- Zeabur Docker service: `loyaltypilot-evolution`
-- Optional Render Docker web service: `loyaltypilot-evolution`
+- Zeabur Docker service: `zappy-evolution`
+- Optional Render Docker web service: `zappy-evolution`
 - Official Evolution API image: `evoapicloud/evolution-api:latest`
 - Health check endpoint: `/`
 - API authentication: `apikey` header using `AUTHENTICATION_API_KEY`
@@ -74,15 +74,15 @@ CORS_ORIGIN
 
 1. Push this repository to GitHub.
 2. In Render, create a new Blueprint from this repository.
-3. Render creates `loyaltypilot-evolution` and `loyaltypilot-evolution-postgres`.
+3. Render creates `zappy-evolution` and `zappy-evolution-postgres`.
 4. Set the required environment variables.
 5. Deploy.
 6. Verify:
 
    ```bash
-   export EVOLUTION_API_URL=https://your-render-url
+   export EVOLUTION_API_URL=https://wa.zappy.rest
    export EVOLUTION_API_KEY=your-render-authentication-api-key
-   export INSTANCE_NAME=loyaltypilot_verify
+   export INSTANCE_NAME=zappy_verify
    ./scripts/verify-all.sh
    ```
 

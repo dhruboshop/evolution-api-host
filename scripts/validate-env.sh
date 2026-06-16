@@ -45,7 +45,7 @@ esac
 
 case "$CORS_ORIGIN" in
   "*"|"")
-    echo "CORS_ORIGIN must be restricted to the LoyaltyPilot web origin in production." >&2
+    echo "CORS_ORIGIN must be restricted to the Zappy web origin in production." >&2
     exit 1
     ;;
 esac
